@@ -1,0 +1,11 @@
+app AiAvatarApp {
+  wasp: {
+    version: "^0.16.2" // Pins the version of Wasp to use.
+  },
+  title: "AI Avatar App"
+}
+
+route RootRoute { path: "/", to: MainPage }
+page MainPage {
+  component: import { MainPage } from "@src/MainPage"
+}
