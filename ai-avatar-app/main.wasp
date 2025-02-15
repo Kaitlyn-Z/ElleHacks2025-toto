@@ -9,3 +9,7 @@ route RootRoute { path: "/", to: MainPage }
 page MainPage {
   component: import { MainPage } from "@src/MainPage"
 }
+
+action processSpeech {
+  fn: import { processSpeech } from "@src/server/processSpeech.js"
+}
