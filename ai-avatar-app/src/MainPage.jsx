@@ -1,4 +1,4 @@
-import waspLogo from './waspLogo.png'
+{/*import waspLogo from './waspLogo.png'*/}
 import './Main.css'
 
 export const MainPage = () => {
@@ -6,11 +6,11 @@ export const MainPage = () => {
     <div className="container">
       <main>
         <div className="logo">
-          <img src={waspLogo} alt="wasp" />
+          {/*<img src={insert logo here} alt="wasp" />*/}
         </div>
 
         <h2 className="welcome-title">
-          Welcome to Wasp - you just started a new app!
+          Create the visuals for the site later (just get AI to write code for react/css files)
         </h2>
         <h3 className="welcome-subtitle">
           This is page <code>MainPage</code> located at route <code>/</code>.

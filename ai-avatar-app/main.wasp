@@ -1,7 +1,11 @@
 app AiAvatarApp {
+  wasp: {
+    version: "^0.16.2" // Pins the version of Wasp to use.
+  },
   title: "AI Avatar App"
-  
-  auth { userEntity: User }
 }
 
-entity User {=json}
+route RootRoute { path: "/", to: MainPage }
+page MainPage {
+  component: import { MainPage } from "@src/MainPage"
+}
