@@ -17,3 +17,7 @@ action processSpeech {
 action recordAudio {
   fn: import { recordAudio } from "@src/recordAudio.js"
 }
+
+action processAudio {
+  fn: import { processAudio } from "@src/api"
+}
