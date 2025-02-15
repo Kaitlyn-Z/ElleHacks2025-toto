@@ -13,3 +13,7 @@ page MainPage {
 action processSpeech {
   fn: import { processSpeech } from "@src/server/processSpeech.js"
 }
+
+action recordAudio {
+  fn: import { recordAudio } from "@src/recordAudio.js"
+}
