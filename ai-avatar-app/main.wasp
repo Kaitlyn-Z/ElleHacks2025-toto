@@ -1,0 +1,7 @@
+app AiAvatarApp {
+  title: "AI Avatar App"
+  
+  auth { userEntity: User }
+}
+
+entity User {=json}
