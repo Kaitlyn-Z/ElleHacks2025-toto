@@ -77,5 +77,14 @@ def text_to_speech(text):
         return audio_file
     return None
 
+def process_speech(audio_file):
+    model = whisper.load_model("base")  # Load Whisper model
+
+    # Convert audio file to text
+    audio = whisper.load_audio(audio_file)
+    result = model.transcribe(audio)
+
+    return result["text"]
+
 if __name__ == "__main__":
     app.run(port=5001)
