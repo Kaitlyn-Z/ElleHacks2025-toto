@@ -12,7 +12,7 @@ from pydub.playback import play
 app = Flask(__name__)
 CORS(app)  # Allow frontend to call backend
 
-ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
+ELEVENLABS_API_KEY = os.getenv("sk_b20071cf5812c6fa8db895d856fa5bb3fb80b47adbfeee4d")  # Get API key from environment
 SYSTEM_PROMPT = "Always use simple, easy-to-understand words..."
 
 def record_voice():
