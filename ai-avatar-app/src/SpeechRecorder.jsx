@@ -1,3 +1,4 @@
+// SpeechRecorder.jsx
 import { useState, useEffect } from "react";
 import { processAudio } from "./api.js";
 
@@ -47,10 +48,10 @@ export default function SpeechRecorder() {
   return (
     <div className="speech-recorder">
       <h2>Microphone: {microphone}</h2>
-      <button onClick={startRecording} disabled={isRecording}>
+      <button onClick={startRecording} disabled={isRecording} className="button-filled">
         Start Recording
       </button>
-      <button onClick={stopRecording} disabled={!isRecording}>
+      <button onClick={stopRecording} disabled={!isRecording} className="button-outline">
         Stop Recording
       </button>
       <div className="transcription">
