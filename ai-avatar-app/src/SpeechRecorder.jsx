@@ -1,63 +1,84 @@
-// SpeechRecorder.jsx
-import { useState, useEffect } from "react";
-import { processAudio } from "./api.js";
+import { useState, useRef } from "react";
+import { processAudio } from "./api";
 
-export default function SpeechRecorder() {
-  const [isRecording, setIsRecording] = useState(false);
-  const [microphone, setMicrophone] = useState("Detecting...");
-  const [transcription, setTranscription] = useState("");
-  let mediaRecorder;
-  let audioChunks = [];
+const SpeechRecorder = () => {
+  const [transcribedText, setTranscribedText] = useState("");
+  const [aiResponse, setAiResponse] = useState("");
+  const [audioSrc, setAudioSrc] = useState(null);
+  const [recording, setRecording] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
 
-  // Detect and display the active microphone
-  useEffect(() => {
-    navigator.mediaDevices.enumerateDevices().then((devices) => {
-      const mic = devices.find((device) => device.kind === "audioinput");
-      setMicrophone(mic ? mic.label || "Microphone detected" : "No microphone found");
-    });
-  }, []);
-
-  // Start recording audio
   const startRecording = async () => {
-    setIsRecording(true);
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    mediaRecorder = new MediaRecorder(stream);
+    const mediaRecorder = new MediaRecorder(stream);
+    mediaRecorderRef.current = mediaRecorder;
+    audioChunksRef.current = [];
+    setRecording(true);
 
     mediaRecorder.ondataavailable = (event) => {
-      if (event.data.size > 0) audioChunks.push(event.data);
-    };
-
-    mediaRecorder.onstop = async () => {
-      const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
-      const formData = new FormData();
-      formData.append("audio", audioBlob);
-
-      const response = await processAudio(formData);
-      setTranscription(response.text);
+      audioChunksRef.current.push(event.data);
     };
 
     mediaRecorder.start();
   };
 
-  // Stop recording and send to backend
-  const stopRecording = () => {
-    setIsRecording(false);
-    mediaRecorder.stop();
+  const stopRecording = async () => {
+    if (!mediaRecorderRef.current) return;
+    
+    mediaRecorderRef.current.stop();
+    setRecording(false);
+    setLoading(true);
+
+    mediaRecorderRef.current.onstop = async () => {
+      const audioBlob = new Blob(audioChunksRef.current, { type: "audio/wav" });
+      const formData = new FormData();
+      formData.append("audio", audioBlob);
+
+      console.log("Sending audio to backend...");
+      const data = await processAudio(formData);
+
+      setLoading(false);
+
+      if (data.error) {
+        console.error("Backend error:", data.error);
+        return;
+      }
+
+      setTranscribedText(data.text || "No transcription available.");
+      setAiResponse(data.ai_response || "No AI response.");
+      
+      if (data.audio) {
+        setAudioSrc(`http://localhost:5001/audio/${data.audio}`);
+      }
+    };
   };
 
   return (
-    <div className="speech-recorder">
-      <h2>Microphone: {microphone}</h2>
-      <button onClick={startRecording} disabled={isRecording} className="button-filled">
-        Start Recording
+    <div>
+      <button onClick={startRecording} disabled={recording || loading}>
+        🎤 Start Recording
       </button>
-      <button onClick={stopRecording} disabled={!isRecording} className="button-outline">
-        Stop Recording
+      <button onClick={stopRecording} disabled={!recording || loading}>
+        ⏹️ Stop Recording
       </button>
-      <div className="transcription">
-        <h3>Transcription:</h3>
-        <p>{transcription || "No speech detected yet..."}</p>
-      </div>
+
+      {loading && <p>⏳ Processing... Please wait.</p>}
+
+      <h3>User Said:</h3>
+      <p>{transcribedText}</p>
+
+      <h3>AI Response:</h3>
+      <p>{aiResponse}</p>
+
+      {audioSrc && (
+        <audio controls>
+          <source src={audioSrc} type="audio/mp3" />
+        </audio>
+      )}
     </div>
   );
-}
+};
+
+export default SpeechRecorder;
