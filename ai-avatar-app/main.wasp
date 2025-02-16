@@ -5,7 +5,11 @@ app AiAvatarApp {
   title: "AI Avatar App"
 }
 
-route RootRoute { path: "/", to: MainPage }
+route RootRoute {
+  path: "/",
+  to: MainPage
+}
+
 page MainPage {
   component: import { MainPage } from "@src/MainPage"
 }

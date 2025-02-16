@@ -10,6 +10,8 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
+  background-image: linear-gradient(180deg,#F6D992, #F6A192);
+  color: #333;
 }
 
 .container {
@@ -18,6 +20,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 10px;
 }
 
 main {
@@ -34,11 +37,28 @@ main p {
 }
 
 .logo {
+  position: absolute;  /* Allow absolute positioning */
+  top: 20px;  /* Adjust this to set the distance from the top */
+  left: 20px;  /* Adjust this to set the distance from the left */
   margin-bottom: 2rem;
+  text-align: center;
 }
 
 .logo img {
-  max-height: 200px;
+  width: 100px;  /* Adjust the size of the image */
+  height: 100px;  /* Ensure the height and width are equal for a perfect circle */
+  border-radius: 50%;  /* Makes the image circular */
+  border: 5px solid white;  /* Adds a white border around the image */
+  object-fit: cover;  /* Ensures the image maintains aspect ratio while filling the circle */
+}
+
+
+.main-title {
+  font-size: 2.5rem;
+  color: #ca7366; /* Title color */
+  font-weight: 700;
+  text-align: center;  /* Horizontally center the text */
+  margin: 0 auto;  /* Center the element itself, if necessary */
 }
 
 .welcome-title {
@@ -87,7 +107,6 @@ code {
   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace;
 }
-
 .speech-recorder {
   text-align: center;
 }
